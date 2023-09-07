@@ -7,8 +7,10 @@ from p2p.structures.peer import Peer
 
 
 class Peers():
-    def __init__(self):
+    def __init__(self, bootnode=None):
         self.peers = []
+        if bootnode is not None:
+            self.add(bootnode)
         self.logger = logging.getLogger(__name__)
 
         # Check availability of peers every 5 seconds

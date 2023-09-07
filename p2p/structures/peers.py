@@ -13,7 +13,7 @@ class Peers(dict):
         self.peers = []
         if bootnode is not None:
             bootnode = bootnode.split(":")
-            bootnode = json.dumps({"host": bootnode[0], "port": int(bootnode[1])})
+            bootnode = Peer(bootnode[0], int(bootnode[1]))
             self.add(bootnode)
 
         # Check availability of peers every 5 seconds
@@ -94,7 +94,7 @@ class Peers(dict):
                     for peer in data:
                         host = peer.split(":")[0]
                         port = int(peer.split(":")[1])
-                        self.add(json.dumps({"host": host, "port": port}))
+                        self.add(Peer(host, port))
             except requests.exceptions.ConnectionError:
                 continue
 

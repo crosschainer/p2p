@@ -3,6 +3,7 @@ import flask.cli
 import logging
 import threading
 import json
+from p2p.structures.peer import Peer
 
 class WebServer():
     def __init__(self, host, port, peers):
@@ -30,5 +31,5 @@ class WebServer():
         port = 5000
         peer = self.peers.getByHost(host)
         if peer is None:
-            self.peers.add(json.dumps({"host": host, "port": port}))
+            self.peers.add(Peer(host, port))
         return "pong"

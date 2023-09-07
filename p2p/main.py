@@ -23,7 +23,7 @@ def boot():
         p2p = P2P("0.0.0.0", 5000, args.bootnode)
     # User input loop
     while True:
-        command = input("Enter a command: ")
+        command = input()
         if command == "peers":
             print(p2p.peers.getAll())
         else:

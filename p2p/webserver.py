@@ -13,7 +13,6 @@ class WebServer():
         self.peers = peers
         self.logger = logging.getLogger(__name__)
         self.app.add_url_rule("/ping", "ping", self.ping, methods=["GET"])
-        self.app.add_url_rule("/peers/add", "addPeer", self.peers.add, methods=["POST"])
         self.app.add_url_rule("/peers", "getPeers", self.peers.getAll, methods=["GET"])
         self.webserverThread = threading.Thread(target=self.start)
         self.webserverThread.daemon = True

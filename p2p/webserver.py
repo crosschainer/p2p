@@ -31,5 +31,4 @@ class WebServer():
         peer = self.peers.getByHost(host)
         if peer is None:
             self.peers.add(json.dumps({"host": host, "port": port}))
-            self.logger.info("Peer added: {}:{}".format(host, port))
         return "pong"

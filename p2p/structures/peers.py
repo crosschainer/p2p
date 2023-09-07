@@ -86,7 +86,7 @@ class Peers():
             response = requests.get("http://{}:{}/peers".format(randomPeer.host, randomPeer.port))
             if response.status_code == 200:
                 data = json.loads(response.text)
-                for peer in data["peers"]:
+                for peer in data:
                     self.add(peer)
         except requests.exceptions.ConnectionError:
             return

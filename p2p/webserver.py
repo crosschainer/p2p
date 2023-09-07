@@ -24,4 +24,11 @@ class WebServer():
         self.app.run(host=self.host, port=self.port)
 
     def ping(self):
+        # If pinged by another node, add it to the list of peers if it's not already there
+        host = flask.request.remote_addr
+        port = 5000
+        peer = self.peers.getByHost(host)
+        if peer is None:
+            self.peers.add({"host": host, "port": port})
+            self.logger.info("Peer added: {}:{}".format(host, port))
         return "pong"

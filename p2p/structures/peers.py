@@ -8,10 +8,11 @@ from p2p.structures.peer import Peer
 
 class Peers():
     def __init__(self, bootnode=None):
+        self.logger = logging.getLogger(__name__)
         self.peers = []
         if bootnode is not None:
             self.add(bootnode)
-        self.logger = logging.getLogger(__name__)
+            self.logger.info("Bootnode added: {}".format(bootnode))
 
         # Check availability of peers every 5 seconds
         self.checkAvailabilityThread = threading.Thread(target=self.checkAvailability)
@@ -45,9 +46,11 @@ class Peers():
         if peer in self.peers:
             return
         self.peers.append(peer)
+        self.logger.info("Peer added: {}:{}".format(peer.host, peer.port))
 
     def remove(self, peer):
         self.peers.remove(peer)
+        self.logger.info("Peer removed: {}:{}".format(peer.host, peer.port))
 
     def get(self, index):
         return self.peers[index]

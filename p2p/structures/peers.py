@@ -11,7 +11,9 @@ class Peers():
         self.logger = logging.getLogger(__name__)
         self.peers = []
         if bootnode is not None:
-            self.add(bootnode)
+            bootnode = bootnode.split(":")
+            bootnode = {"host": bootnode[0], "port": int(bootnode[1])}
+            self.add({"peers": [bootnode]})
             self.logger.info("Bootnode added: {}".format(bootnode))
 
         # Check availability of peers every 5 seconds

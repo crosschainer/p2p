@@ -77,7 +77,7 @@ class Peers(dict):
             time.sleep(5)
             randomPeer = self.getRandom()
             if randomPeer is None:
-                return
+                continue
             if randomPeer.checkAvailability() is False:
                 self.remove(randomPeer)
 
@@ -86,7 +86,7 @@ class Peers(dict):
             time.sleep(5)
             randomPeer = self.getRandom()
             if randomPeer is None:
-                return
+                continue
             try:
                 response = requests.get("http://{}:{}/peers".format(randomPeer.host, randomPeer.port))
                 if response.status_code == 200:
@@ -96,7 +96,7 @@ class Peers(dict):
                         port = int(peer.split(":")[1])
                         self.add(json.dumps({"host": host, "port": port}))
             except requests.exceptions.ConnectionError:
-                return
+                continue
 
 
     def toJson(self):

@@ -12,9 +12,8 @@ class Peers(dict):
         self.peers = []
         if bootnode is not None:
             bootnode = bootnode.split(":")
-            bootnode = Peer(bootnode[0], bootnode[1])
+            bootnode = json.dumps({"host": bootnode[0], "port": int(bootnode[1])})
             self.add(bootnode)
-            self.logger.info("Bootnode added: {}".format(bootnode))
 
         # Check availability of peers every 5 seconds
         self.checkAvailabilityThread = threading.Thread(target=self.checkAvailability)

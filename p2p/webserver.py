@@ -2,6 +2,7 @@ from flask import Flask, send_from_directory, jsonify
 import flask.cli
 import logging
 import threading
+import json
 
 class WebServer():
     def __init__(self, host, port, peers):

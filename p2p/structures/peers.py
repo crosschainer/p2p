@@ -58,7 +58,7 @@ class Peers(dict):
         return self.peers[index]
 
     def getAll(self):
-        return self.peers if len(self.peers) > 0 else None
+        return [str(peer) for peer in self.peers]
 
     def getByHost(self, host):
         for peer in self.peers:

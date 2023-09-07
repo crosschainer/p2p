@@ -1,7 +1,7 @@
 import json
 import requests
 
-class Peer():
+class Peer(dict):
     def __init__(self, host, port):
         self.host = host
         self.port = port

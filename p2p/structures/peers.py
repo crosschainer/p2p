@@ -6,7 +6,7 @@ import random
 from p2p.structures.peer import Peer
 
 
-class Peers():
+class Peers(dict):
     def __init__(self, bootnode=None):
         self.logger = logging.getLogger(__name__)
         self.peers = []

@@ -3,6 +3,7 @@ import threading
 import logging
 import requests
 import random
+import time
 from p2p.structures.peer import Peer
 
 
@@ -72,26 +73,30 @@ class Peers(dict):
         return random.choice(self.peers)
 
     def checkAvailability(self):
-        randomPeer = self.getRandom()
-        if randomPeer is None:
-            return
-        if randomPeer.checkAvailability() is False:
-            self.remove(randomPeer)
+        while True:
+            time.sleep(5)
+            randomPeer = self.getRandom()
+            if randomPeer is None:
+                return
+            if randomPeer.checkAvailability() is False:
+                self.remove(randomPeer)
 
     def discoverPeers(self):
-        randomPeer = self.getRandom()
-        if randomPeer is None:
-            return
-        try:
-            response = requests.get("http://{}:{}/peers".format(randomPeer.host, randomPeer.port))
-            if response.status_code == 200:
-                data = json.loads(response.text)
-                for peer in data:
-                    host = peer.split(":")[0]
-                    port = int(peer.split(":")[1])
-                    self.add(json.dumps({"host": host, "port": port}))
-        except requests.exceptions.ConnectionError:
-            return
+        while True:
+            time.sleep(5)
+            randomPeer = self.getRandom()
+            if randomPeer is None:
+                return
+            try:
+                response = requests.get("http://{}:{}/peers".format(randomPeer.host, randomPeer.port))
+                if response.status_code == 200:
+                    data = json.loads(response.text)
+                    for peer in data:
+                        host = peer.split(":")[0]
+                        port = int(peer.split(":")[1])
+                        self.add(json.dumps({"host": host, "port": port}))
+            except requests.exceptions.ConnectionError:
+                return
 
 
     def toJson(self):

@@ -12,7 +12,7 @@ class Peers():
         self.peers = []
         if bootnode is not None:
             bootnode = bootnode.split(":")
-            bootnode = {"host": bootnode[0], "port": int(bootnode[1])}
+            bootnode = json.dumps({"host": bootnode[0], "port": int(bootnode[1])})
             self.add(bootnode)
             self.logger.info("Bootnode added: {}".format(bootnode))
 
@@ -99,8 +99,8 @@ class Peers():
         return json.dumps(data)
 
     @staticmethod
-    def fromJson(json):
-        data = json.loads(json)
+    def fromJson(json_str):
+        data = json.loads(json_str)
         peers = Peers()
         for peer in data["peers"]:
             peers.add(Peer.fromJson(peer))

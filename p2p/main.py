@@ -11,9 +11,13 @@ class P2P():
         self.peers = Peers(bootnode)
         self.webserver = WebServer(self.host, self.port, self.peers)
 
-def boot(args=None):
+def boot():
+    parser = argparse.ArgumentParser(description="P2P Network")
+    parser.add_argument("--bootnode", required=False, help="Bootnode address", type=str)
+    args = parser.parse_args()
     logging.basicConfig(level=logging.INFO)
-    if args is None:
+    if args.bootnode is None:
+        logging.info("No bootnode specified, starting new network")
         p2p = P2P("0.0.0.0", 5000)
     else:
         p2p = P2P("0.0.0.0", 5000, args.bootnode)
@@ -26,7 +30,4 @@ def boot(args=None):
             print("Invalid command")
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="P2P Network")
-    parser.add_argument("--bootnode", required=False, help="Bootnode address", type=str)
-    args = parser.parse_args()
-    boot(args)
+    boot()

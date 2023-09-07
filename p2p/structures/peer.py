@@ -27,6 +27,6 @@ class Peer():
         return json.dumps(data)
 
     @staticmethod
-    def fromJson(json):
-        data = json.loads(json)
+    def fromJson(json_str):
+        data = json.loads(json_str)
         return Peer(data["host"], data["port"])

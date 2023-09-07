@@ -13,7 +13,10 @@ class P2P():
 
 def boot(args=None):
     logging.basicConfig(level=logging.INFO)
-    p2p = P2P("0.0.0.0", 5000, args.bootnode)
+    if args.bootnode is None:
+        p2p = P2P("0.0.0.0", 5000)
+    else:
+        p2p = P2P("0.0.0.0", 5000, args.bootnode)
     # User input loop
     while True:
         command = input("Enter a command: ")

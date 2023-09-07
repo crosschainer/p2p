@@ -87,7 +87,9 @@ class Peers(dict):
             if response.status_code == 200:
                 data = json.loads(response.text)
                 for peer in data:
-                    self.add(peer)
+                    host = peer.split(":")[0]
+                    port = int(peer.split(":")[1])
+                    self.add(json.dumps({"host": host, "port": port}))
         except requests.exceptions.ConnectionError:
             return
 

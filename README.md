@@ -12,5 +12,5 @@ p2p
 
 Join existing P2P network
 ```bash
-p2p -bootnode <bootnode ip:port>
+p2p --bootnode <bootnode ip:port>
 ```

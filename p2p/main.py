@@ -11,7 +11,7 @@ class P2P():
         self.peers = Peers(bootnode)
         self.webserver = WebServer(self.host, self.port, self.peers)
 
-def boot(args):
+def boot(args=None):
     logging.basicConfig(level=logging.INFO)
     p2p = P2P("0.0.0.0", 5000, args.bootnode)
     # User input loop

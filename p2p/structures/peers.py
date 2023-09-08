@@ -106,7 +106,9 @@ class Peers(dict):
                         port = int(peer.split(":")[1])
                         self.add(Peer(host, port))
             except:
-                continue
+                # If the peer is not available, remove it
+                if randomPeer in self.peers:
+                    self.remove(randomPeer)
 
 
     def toJson(self):

@@ -11,13 +11,14 @@ class Peers(dict):
     def __init__(self, bootnode=None, my_host=None, my_port=None):
         self.logger = logging.getLogger(__name__)
         self.peers = []
+
+        self.my_host = my_host
+        self.my_port = my_port
+
         if bootnode is not None:
             bootnode = bootnode.split(":")
             bootnode = Peer(bootnode[0], int(bootnode[1]))
             self.add(bootnode)
-
-        self.my_host = my_host
-        self.my_port = my_port
 
         # Check availability of peers every 5 seconds
         self.checkAvailabilityThread = threading.Thread(target=self.checkAvailability)

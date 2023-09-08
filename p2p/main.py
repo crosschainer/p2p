@@ -43,7 +43,6 @@ def boot():
             sender = input("Sender: ")
             amount = input("Amount: ")
             receiver = input("Receiver: ")
-            timestamp = input("Timestamp: ")
             p2p.webserver.receive_transaction(Transaction(sender, receiver, amount, int(time.time())))
         else:
             print("Invalid command")

@@ -3,11 +3,11 @@ import time
 import hashlib
 
 class Transaction():
-    def __init__(self, sender, receiver, amount, timestamp=None):
+    def __init__(self, sender, receiver, amount, timestamp):
         self.sender = sender
         self.receiver = receiver
         self.amount = amount
-        self.timestamp = timestamp if timestamp is not None else time.time()
+        self.timestamp = timestamp
         self.hash = self.calculate_hash()
 
     def calculate_hash(self):
@@ -32,6 +32,6 @@ class Transaction():
     @staticmethod
     def fromJson(json_str):
         data = json.loads(json_str)
-        transaction = Transaction(data["sender"], data["receiver"], data["amount"])
+        transaction = Transaction(data["sender"], data["receiver"], data["amount"], data["timestamp"])
         return transaction
     

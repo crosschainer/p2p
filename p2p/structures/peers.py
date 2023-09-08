@@ -18,6 +18,10 @@ class Peers(dict):
         if bootnode is not None:
             bootnode = bootnode.split(":")
             bootnode = Peer(bootnode[0], int(bootnode[1]))
+            # Check if bootnode is available
+            if bootnode.checkAvailability() is False:
+                self.logger.error("Bootnode is not available")
+                exit(1)
             self.add(bootnode)
 
         # Check availability of peers every 5 seconds

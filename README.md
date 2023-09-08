@@ -2,7 +2,7 @@ Install
 ```bash
 git clone https://github.com/crosschainer/p2p
 cd p2p
-pip install .
+pip install -e .
 Restart your terminal to use the p2p command
 ```
 

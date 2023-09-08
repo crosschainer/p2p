@@ -51,6 +51,7 @@ class WebServer():
             self.logger.info("Received new transaction: {}".format(transaction)) 
             self.pendingTransactions.append(transaction)
             self.broadcast_transaction(transaction)
+        return "Transaction received"
 
 
     def ping(self):

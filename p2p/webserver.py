@@ -1,8 +1,9 @@
-from flask import Flask, send_from_directory, jsonify
+from flask import Flask, send_from_directory, jsonify, request
 import flask.cli
 import logging
 import threading
 import json
+import requests
 from p2p.structures.peer import Peer
 from p2p.structures.transaction import Transaction
 
@@ -33,7 +34,7 @@ class WebServer():
         if len(self.peers) == 0:
             return
         self.logger.info("Broadcasting to peers")
-        for peer in self.peers:
+        for peer in self.peers.peers:
             try:
                 response = requests.post("http://{}:{}/transactions/add".format(peer.host, peer.port), json=transaction)
                 if response.status_code != 200:
@@ -41,7 +42,9 @@ class WebServer():
             except:
                 self.peers.remove(peer)
 
-    def receive_transaction(self, transaction):
+    def receive_transaction(self, transaction = None):
+        if transaction is None:
+            transaction = request.get_json()
         if isinstance(transaction, str):
             transaction = Transaction.fromJson(transaction)
         if transaction not in self.pendingTransactions:

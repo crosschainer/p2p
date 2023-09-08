@@ -5,7 +5,7 @@ import threading
 import json
 import requests
 from p2p.structures.peer import Peer
-from p2p.structures.transaction import Transaction
+from p2p.chain.transaction import Transaction
 
 class WebServer():
     def __init__(self, host, port, peers):

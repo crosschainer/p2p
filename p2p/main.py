@@ -6,7 +6,7 @@ import time
 from p2p.webserver import WebServer
 from p2p.structures.peers import Peers
 from p2p.chain.blockchain import Blockchain
-from p2p.structures.transaction import Transaction
+from p2p.chain.transaction import Transaction
 from p2p.chain.block import Block
 
 class P2P():
@@ -34,7 +34,7 @@ def boot():
     logging.basicConfig(level=logging.INFO)
     host = get_my_public_ip()
     if args.bootnode is None:
-        logging.info("No bootnode specified, starting new network")
+        logging.info("No bootnode specified, starting new peer network")
         p2p = P2P(host, 5000, None, args.new_chain)
     else:
         p2p = P2P(host, 5000, args.bootnode)

@@ -11,6 +11,9 @@ class Blockchain:
         # We dont want to store in memory or are we crazy?
         self.logger = logging.getLogger(__name__)
         self.blocks_dir = os.path.dirname(os.path.realpath(__file__)) + "/blocks/"
+        if not os.path.exists(self.blocks_dir):
+            os.makedirs(self.blocks_dir)
+
         self.last_block = None
         self.logger.info("Blocks directory set to: " + self.blocks_dir)
         self.difficulty = 1 # Number of zeroes in hash of block, we'll change this to reach a 10 minute block time dynamically

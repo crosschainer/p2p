@@ -1,6 +1,7 @@
 import time
 import hashlib
 import logging
+import json
 
 class Block():
 
@@ -10,7 +11,7 @@ class Block():
         self.timestamp = None # We'll set this later when mining
         self.data = data # If no transactions, data is None. We still create blocks for mining rewards.
         self.previous_hash = previous_hash
-        self.nonce = None # We'll set this later when mining
+        self.nonce = 0 # We'll set this later when mining
         self.hash = None # We'll set this later when mining
         self.miner = None # We'll set this later when mining and we know who mined it
         
@@ -25,7 +26,7 @@ class Block():
             mine_hash = self.calculateHash()
             # Get amount of zeros in hash
             zeros = 0
-            for char in self.hash:
+            for char in mine_hash:
                 if char == "0":
                     zeros += 1
                 else:
@@ -35,12 +36,34 @@ class Block():
             if zeros < difficulty:
                 self.nonce += 1
 
-            # If amount of zeros is equal to difficulty, we have a valid hash
-            elif zeros == difficulty:
+            # If amount of zeros is equal or higher to difficulty, we have a valid hash
+            elif zeros >= difficulty:
                 self.hash = mine_hash
                 self.timestamp = int(time.time())
                 self.nonce = self.nonce
         
         self.logger.info("Mined block: " + self.hash)
         return self.hash
+
+    def toJson(self):
+        data = {
+            "index": self.index,
+            "timestamp": self.timestamp,
+            "data": self.data,
+            "previous_hash": self.previous_hash,
+            "nonce": self.nonce,
+            "hash": self.hash,
+            "miner": self.miner
+        }
+        return json.dumps(data)
+
+    @staticmethod
+    def fromJson(json_str):
+        data = json.loads(json_str)
+        block = Block(data["index"], data["previous_hash"], data["data"])
+        block.timestamp = data["timestamp"]
+        block.nonce = data["nonce"]
+        block.hash = data["hash"]
+        block.miner = data["miner"]
+        return block
 

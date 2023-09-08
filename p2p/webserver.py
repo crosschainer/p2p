@@ -14,11 +14,13 @@ class WebServer():
         self.app = Flask(__name__)
         self.peers = peers
         self.pendingTransactions = []
+        self.pendingBlocks = []
         self.logger = logging.getLogger(__name__)
         self.app.add_url_rule("/ping", "ping", self.ping, methods=["GET"])
         self.app.add_url_rule("/peers", "getPeers", self.peers.getAll, methods=["GET"])
         self.app.add_url_rule("/transactions/pending", "getTransactions", self.pendingTransactions, methods=["GET"])
         self.app.add_url_rule("/transactions/add", "addTransaction", self.receive_transaction, methods=["POST"])
+        self.app.add_url_rule("/blocks/add", "addBlock", self.receive_block, methods=["POST"])
         self.webserverThread = threading.Thread(target=self.start)
         self.webserverThread.daemon = True
         self.webserverThread.start()
@@ -28,6 +30,29 @@ class WebServer():
 
     def start(self):
         self.app.run(host=self.host, port=self.port)
+
+    def broadcast_new_block(self, block):
+        block = block.toJson()
+        if len(self.peers) == 0:
+            return
+        self.logger.info("Broadcasting to peers")
+        for peer in self.peers.peers:
+            try:
+                response = requests.post("http://{}:{}/blocks/add".format(peer.host, peer.port), json=block)
+                if response.status_code != 200:
+                    self.peers.remove(peer)
+            except:
+                self.peers.remove(peer)
+
+    def receive_block(self, block = None):
+        if block is None:
+            block = request.get_json()
+        if isinstance(block, str):
+            block = Block.fromJson(block)
+        if block not in self.blocks:
+            self.logger.info("Received new block: {}".format(block)) 
+            self.pendingBlocks.append(block)
+        return "Block received"
 
     def broadcast_transaction(self, transaction):
         transaction = transaction.toJson()

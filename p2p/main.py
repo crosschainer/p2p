@@ -7,6 +7,7 @@ from p2p.webserver import WebServer
 from p2p.structures.peers import Peers
 from p2p.chain.blockchain import Blockchain
 from p2p.structures.transaction import Transaction
+from p2p.chain.block import Block
 
 class P2P():
     def __init__(self, host, port, bootnode=None, new_chain=False):
@@ -14,11 +15,16 @@ class P2P():
         self.port = port
         self.peers = Peers(bootnode, host, port)
         self.webserver = WebServer(self.host, self.port, self.peers)
-        self.blockchain = Blockchain(new_chain)
+        self.blockchain = Blockchain(new_chain, self.webserver)
 
 def get_my_public_ip():
-    req = requests.get("https://api.ipify.org?format=json")
-    return req.json()["ip"]
+    try:
+        response = requests.get("https://httpbin.org/ip")
+        data = response.json()
+        return data['origin']
+    except requests.exceptions.RequestException as e:
+        logging.error("Failed to get public IP: {}".format(e))
+        exit(1)
 
 def boot():
     parser = argparse.ArgumentParser(description="P2P Network")

@@ -11,6 +11,13 @@ class P2P():
         self.peers = Peers(bootnode, host, port)
         self.webserver = WebServer(self.host, self.port, self.peers)
 
+def get_my_public_ip():
+    try:
+        response = requests.get("https://api.ipify.org?format=json")
+        return response.json()["ip"]
+    except:
+        return None
+
 def boot():
     parser = argparse.ArgumentParser(description="P2P Network")
     parser.add_argument("--bootnode", required=False, help="Bootnode address", type=str)
@@ -18,9 +25,9 @@ def boot():
     logging.basicConfig(level=logging.INFO)
     if args.bootnode is None:
         logging.info("No bootnode specified, starting new network")
-        p2p = P2P("0.0.0.0", 5000)
+        p2p = P2P(get_my_public_ip(), 5000)
     else:
-        p2p = P2P("0.0.0.0", 5000, args.bootnode)
+        p2p = P2P(get_my_public_ip(), 5000, args.bootnode)
     # User input loop
     while True:
         command = input()

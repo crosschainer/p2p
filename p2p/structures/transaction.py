@@ -3,11 +3,11 @@ import time
 import hashlib
 
 class Transaction():
-    def __init__(self, sender, receiver, amount):
+    def __init__(self, sender, receiver, amount, timestamp=None):
         self.sender = sender
         self.receiver = receiver
         self.amount = amount
-        self.timestamp = time.time()
+        self.timestamp = timestamp if timestamp is not None else time.time()
         self.hash = self.calculate_hash()
 
     def calculate_hash(self):

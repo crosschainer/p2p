@@ -2,6 +2,7 @@ import threading
 import logging
 import argparse
 import requests
+import time
 from p2p.webserver import WebServer
 from p2p.structures.peers import Peers
 from p2p.chain.blockchain import Blockchain
@@ -42,7 +43,8 @@ def boot():
             sender = input("Sender: ")
             amount = input("Amount: ")
             receiver = input("Receiver: ")
-            p2p.webserver.receive_transaction(Transaction(sender, receiver, amount))
+            timestamp = input("Timestamp: ")
+            p2p.webserver.receive_transaction(Transaction(sender, receiver, amount, int(time.time())))
         else:
             print("Invalid command")
 

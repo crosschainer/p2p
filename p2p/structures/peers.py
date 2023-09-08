@@ -89,7 +89,8 @@ class Peers(dict):
             if randomPeer is None:
                 continue
             if randomPeer.checkAvailability() is False:
-                self.remove(randomPeer)
+                if randomPeer in self.peers: # Could have been removed by discoverPeers
+                    self.remove(randomPeer)
 
     def discoverPeers(self):
         while True:
@@ -107,7 +108,7 @@ class Peers(dict):
                         self.add(Peer(host, port))
             except:
                 # If the peer is not available, remove it
-                if randomPeer in self.peers:
+                if randomPeer in self.peers: # Could have been removed by checkAvailability
                     self.remove(randomPeer)
 
 

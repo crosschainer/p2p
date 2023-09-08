@@ -111,7 +111,6 @@ class Peers(dict):
                 if randomPeer in self.peers: # Could have been removed by checkAvailability
                     self.remove(randomPeer)
 
-
     def toJson(self):
         data = {
             "peers": [peer.toJson() for peer in self.peers]

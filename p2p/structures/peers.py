@@ -8,13 +8,16 @@ from p2p.structures.peer import Peer
 
 
 class Peers(dict):
-    def __init__(self, bootnode=None):
+    def __init__(self, bootnode=None, my_host=None, my_port=None):
         self.logger = logging.getLogger(__name__)
         self.peers = []
         if bootnode is not None:
             bootnode = bootnode.split(":")
             bootnode = Peer(bootnode[0], int(bootnode[1]))
             self.add(bootnode)
+
+        self.my_host = my_host
+        self.my_port = my_port
 
         # Check availability of peers every 5 seconds
         self.checkAvailabilityThread = threading.Thread(target=self.checkAvailability)
@@ -46,6 +49,8 @@ class Peers(dict):
     def add(self, peer):
         if isinstance(peer, str):
             peer = Peer.fromJson(peer)
+        if peer == Peer(self.my_host, self.my_port):
+            return
         if peer in self.peers:
             return
         self.peers.append(peer)
@@ -95,7 +100,7 @@ class Peers(dict):
                         host = peer.split(":")[0]
                         port = int(peer.split(":")[1])
                         self.add(Peer(host, port))
-            except requests.exceptions.ConnectionError:
+            except:
                 continue
 
 

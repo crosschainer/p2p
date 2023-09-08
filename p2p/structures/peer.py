@@ -10,7 +10,7 @@ class Peer(dict):
         try:
             response = requests.get("http://{}:{}/ping".format(self.host, self.port))
             return response.status_code == 200
-        except requests.exceptions.ConnectionError:
+        except:
             return False
 
     def __str__(self):

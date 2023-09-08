@@ -8,7 +8,7 @@ class P2P():
     def __init__(self, host, port, bootnode=None):
         self.host = host
         self.port = port
-        self.peers = Peers(bootnode)
+        self.peers = Peers(bootnode, host, port)
         self.webserver = WebServer(self.host, self.port, self.peers)
 
 def boot():

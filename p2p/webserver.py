@@ -6,6 +6,7 @@ import json
 import requests
 from p2p.structures.peer import Peer
 from p2p.chain.transaction import Transaction
+from p2p.chain.block import Block
 
 class WebServer():
     def __init__(self, host, port, peers):

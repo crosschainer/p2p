@@ -64,7 +64,8 @@ class Blockchain:
             f.write(block.toJson())
         self.logger.info("Emptying pending transactions")
         for transaction in block.data:
-            self.webserver.pendingTransactions.remove(transaction)
+            if transaction in self.webserver.pendingTransactions:
+                self.webserver.pendingTransactions.remove(transaction)
         self.last_block = block
 
     def getLastBlock(self):

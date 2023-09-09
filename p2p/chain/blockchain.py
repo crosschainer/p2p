@@ -81,18 +81,21 @@ class Blockchain:
             return Block.fromJson(f.read())
 
     def validateBlock(self, block):
-        self.logger.info("Validating new block: {}".format(block))
         if isinstance(block, str):
             block = Block.fromJson(block)
-        if block.index != self.getLastBlock().index + 1:
-            self.logger.error("Block index is not correct")
+        if block.index == self.getLastBlock().index + 1:
+            self.logger.info("Validating new block: {}".format(block))
+            if block.index != self.getLastBlock().index + 1:
+                self.logger.error("Block index is not correct")
+                return False
+            if block.previous_hash != self.getLastBlock().hash:
+                self.logger.error("Block previous hash is not correct")
+                return False
+            if block.hash[:self.difficulty] != "0" * self.difficulty:
+                self.logger.error("Block hash does not meet difficulty requirements")
+                return False
+            self.addBlock(block)
+            return True
+        else:
             return False
-        if block.previous_hash != self.getLastBlock().hash:
-            self.logger.error("Block previous hash is not correct")
-            return False
-        if block.hash[:self.difficulty] != "0" * self.difficulty:
-            self.logger.error("Block hash does not meet difficulty requirements")
-            return False
-        self.addBlock(block)
-        return True
 

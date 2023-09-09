@@ -55,10 +55,7 @@ class WebServer():
             block = Block.fromJson(block)
         if block not in self.pendingBlocks:
             # get last block
-            last_block = self.blockchain.getLastBlock()
-            if last_block.index + 1 == block.index:
-                self.logger.info("Received new block: {}".format(block)) 
-                self.pendingBlocks.append(block)
+            self.pendingBlocks.append(block)
         return "Block received"
 
     def broadcast_transaction(self, transaction):

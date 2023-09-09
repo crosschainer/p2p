@@ -53,7 +53,7 @@ class WebServer():
             block = request.get_json()
         if isinstance(block, str):
             block = Block.fromJson(block)
-        if block not in self.blocks:
+        if block.index > self.getLastBlock().index:
             self.logger.info("Received new block: {}".format(block)) 
             self.pendingBlocks.append(block)
         return "Block received"

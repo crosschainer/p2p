@@ -24,6 +24,11 @@ class Blockchain:
         validationThread.start()
         self.logger.info("Validation thread started")
 
+        miningThread = threading.Thread(target=self.miningThread)
+        miningThread.daemon = True
+        miningThread.start()
+        self.logger.info("Mining thread started")
+
         if new_chain:
             self.createGenesisBlock()
 

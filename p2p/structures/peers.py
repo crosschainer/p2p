@@ -36,6 +36,12 @@ class Peers(dict):
         self.discoverPeersThread.start()
         self.logger.info("Discover peers thread started")
 
+        # Discover pending transactions every 5 seconds
+        self.discoverPendingTransactionsThread = threading.Thread(target=self.discoverPendingTransactions)
+        self.discoverPendingTransactionsThread.daemon = True
+        self.discoverPendingTransactionsThread.start()
+        self.logger.info("Discover pending transactions thread started")
+
     def __getitem__(self, index):
         return self.peers[index]
 
@@ -90,6 +96,27 @@ class Peers(dict):
                 continue
             if randomPeer.checkAvailability() is False:
                 if randomPeer in self.peers: # Could have been removed by discoverPeers
+                    self.remove(randomPeer)
+
+    def discoverPendingTransactions(self):
+        while True:
+            time.sleep(5)
+            randomPeer = self.getRandom()
+            if randomPeer is None:
+                continue
+            try:
+                response = requests.get("http://{}:{}/transactions/pending".format(randomPeer.host, randomPeer.port))
+                if response.status_code == 200:
+                    data = json.loads(response.text)
+                    for transaction in data:
+                        sender = transaction["sender"]
+                        receiver = transaction["receiver"]
+                        amount = transaction["amount"]
+                        timestamp = transaction["timestamp"]
+                        self.webserver.receive_transaction(Transaction(sender, receiver, amount, timestamp))
+            except:
+                # If the peer is not available, remove it
+                if randomPeer in self.peers:
                     self.remove(randomPeer)
 
     def discoverPeers(self):

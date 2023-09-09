@@ -18,7 +18,7 @@ class WebServer():
         self.logger = logging.getLogger(__name__)
         self.app.add_url_rule("/ping", "ping", self.ping, methods=["GET"])
         self.app.add_url_rule("/peers", "getPeers", self.peers.getAll, methods=["GET"])
-        self.app.add_url_rule("/transactions/pending", "getTransactions", self.pendingTransactions, methods=["GET"])
+        self.app.add_url_rule("/transactions/pending", "getTransactions", self.get_pending_transactions, methods=["GET"])
         self.app.add_url_rule("/transactions/add", "addTransaction", self.receive_transaction, methods=["POST"])
         self.app.add_url_rule("/blocks/add", "addBlock", self.receive_block, methods=["POST"])
         self.webserverThread = threading.Thread(target=self.start)
@@ -30,6 +30,9 @@ class WebServer():
 
     def start(self):
         self.app.run(host=self.host, port=self.port)
+
+    def get_pending_transactions(self):
+        return jsonify(self.pendingTransactions)
 
     def broadcast_new_block(self, block):
         block = block.toJson()

@@ -83,10 +83,10 @@ class Blockchain:
         self.logger.info("Validating new block: {}".format(block))
         if isinstance(block, str):
             block = Block.fromJson(block)
-        if block.index != len(self.blocks):
+        if block.index != self.getLastBlock().index + 1:
             self.logger.error("Block index is not correct")
             return False
-        if block.previous_hash != self.blocks[-1].hash:
+        if block.previous_hash != self.getLastBlock().hash:
             self.logger.error("Block previous hash is not correct")
             return False
         if block.calculateHash() != block.hash:

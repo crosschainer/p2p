@@ -89,9 +89,6 @@ class Blockchain:
         if block.previous_hash != self.getLastBlock().hash:
             self.logger.error("Block previous hash is not correct")
             return False
-        if block.calculateHash() != block.hash:
-            self.logger.error("Block hash is not correct")
-            return False
         if block.hash[:self.difficulty] != "0" * self.difficulty:
             self.logger.error("Block hash does not meet difficulty requirements")
             return False

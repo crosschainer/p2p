@@ -4,6 +4,7 @@ import sys
 import logging
 import threading
 from p2p.chain.block import Block
+from p2p.chain.transaction import Transaction
 import time
 
 class Blockchain:

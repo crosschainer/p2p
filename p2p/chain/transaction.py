@@ -2,7 +2,7 @@ import json
 import time
 import hashlib
 
-class Transaction():
+class Transaction(dict):
     def __init__(self, sender, receiver, amount, timestamp):
         self.sender = sender
         self.receiver = receiver

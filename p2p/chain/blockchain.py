@@ -39,7 +39,7 @@ class Blockchain:
                 mining_reward = Transaction("0", self.webserver.host, 1, int(time.time()))
                 new_index = self.getLastBlock().index + 1
                 last_hash = self.getLastBlock().hash
-                block = Block(len(self.blocks), self.blocks[-1].hash, self.webserver.pendingTransactions + [mining_reward])
+                block = Block(new_index, last_hash, self.webserver.pendingTransactions + [mining_reward])
                 block.mineBlock(self.difficulty)
                 self.webserver.broadcast_new_block(block)
                 self.validateBlock(block)
